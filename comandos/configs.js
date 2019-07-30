@@ -9,7 +9,7 @@ const db = low(adapter);
 //Programação:
 module.exports.run = async (bot, message, args, prefix) => {
     if(!args[0]) { 
-        return message.channel.send(message.author+" Você precisa definir um argumento para este comando, as formas de uso são:\n**"+prefix+"configs/config** _nick_ `O nome no qual vou te chamar depois que você predefinir um.`\n**"+prefix+"configs/config** _botname_ `O meu novo nome.`\n**"+prefix+"configs/config** _welcomeb_ `sim/não` (Definir se vou dar as boas-vindas nessa guilda ou não) \n**"+prefix+"configs/config** _goodbyeb_ `sim/não` (Definir se vou dar adeus nessa guilda usando o canal de boas-vindas) |Requer canal de welcome previamente definido|")
+        return message.channel.send(message.author+" Você precisa definir um argumento para este comando, as formas de uso são:\n**"+prefix+"configs/config** _nick_ `O nome no qual vou te chamar depois que você predefinir um.`\n**"+prefix+"configs/config** _botname_ `O meu novo nome.`\n**"+prefix+"configs/config** _welcomeb_ `sim/não` (Definir se vou dar as boas-vindas nessa guilda ou não) \n**"+prefix+"configs/config** _goodbyeb_ `sim/não` (Definir se vou dar adeus nessa guilda usando o canal de boas-vindas) \n|Requer canal de welcome previamente definido|\n**EM TESTES**\n **"+prefix+"configs/config** .anunciarc `[ID do canal de avisos]` > Libera o comando **.**anunciar < \n(Defina o canal onde vou anunciar o que você pedir)")
     }
 if(args[0] === "nick") { 
   if(!args[1]) return message.reply("DEFINA UM ARGUMENTO")
@@ -76,6 +76,23 @@ if(args[1] === "não") {
   message.channel.send("Configurações atualizadas.");
 }
 };
+if(args[0] === "anunciarc") { 
+   if(!args[1]) return message.reply("DEFINA UM ID \n > Dica: Acesse: \n > **Configs. -> Aparência. >> Modo desenvolvedor: ativado**.")
+  if(!message.member.hasPermission("MANAGE_GUILD")) return message.reply("😦 | Desculpe, você não pode executar esta ação porque seu nível neste servidor não alcança os requisitos para usar o comando.");
+ 
+  let dbbotnick32 = JSON.parse(fs.readFileSync("./db.json", "utf8"));
+    dbbotnick32[message.guild.id] = {
+        anuncioc: args[1]
+      };
+      fs.writeFile("./db.json", JSON.stringify(dbbotnick32), (err) => {
+        if (err) console.log(err)
+      });
+      let channel = bot.channels.get(dbbotnick32[message.guild.id].anuncioc);
+      if(!channel) return message.reply("Desculpe, eu não detectei este canal, ou o canal que você definiu por Id não existe.")
+      message.reply("Pronto.")
+    
+};
+
 if(args[0] === "welcomec") { 
   if(!args[1]) return message.reply("DEFINA UM ARGUMENTO")
   if(!message.member.hasPermission("MANAGE_GUILD")) return message.reply("😦 | Desculpe, você não pode executar esta ação porque seu nível neste servidor não alcança os requisitos para usar o comando.");
@@ -126,6 +143,7 @@ if(args[1] === "não") {
 
   message.channel.send("Configurações atualizadas.");
 }
+
 };
 };
 //Encerrado, vamos definir as aliases e o nome da função.
