@@ -1,7 +1,7 @@
 // Este é o meu núcleo, aqui você vai encontrar o coração do meu sistema :-D
 const botconfig = require("./botconfig.json");
 const Discord = require('discord.js');
-const bot = new Discord.Client({disableEveryone: true, fetchAllMembers: true});
+const bot = new Discord.Client({disableEveryone: false, fetchAllMembers: true});
 let criador1 = "Cauã (BRAZIL) Geo: CONNECTION ESTABLISHED (geolocation: true)"
 let criador2 = "Layssa (E.300TM-B)"
 const low = require('lowdb');
@@ -9,6 +9,8 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./lowdb.json');
 const db = low(adapter);
 // Vamos para a ação (após variáveis)
+
+
 bot.on("ready", async () => {
     console.log(`Protocolo Friday |v3.6.9| Comando: iniciar.`)
     console.log("Olá, senhor, como está? Espero que bem. ^^")
@@ -16,7 +18,7 @@ bot.on("ready", async () => {
     console.log(`Rastreando meu criador...\nEncontrados:\n${criador1}; \n${criador2}`)
     bot.user.setActivity("Olá mundo. |.help||", {type: "STREAMING", url: "https://www.twitch.tv/monstercat"});
 })
-//Database
+
 
 bot.on("guildCreate", guild => {
     let db1 = JSON.parse(fs.readFileSync("./welcomeb.json", "utf8"));
@@ -26,7 +28,7 @@ bot.on("guildCreate", guild => {
       fs.writeFile("./welcomeb.json", JSON.stringify(db1), (err) => {
         if (err) console.log(err)
       });
-      let db2 = JSON.parse(fs.readFileSync("./welcomec.json", "utf8"));
+      let db2 = JSON.parse(fs.readFileSync("./welcomec.json", "utf8"))
       db2[guild.id] = {
         welcomec: "nada"
       };
@@ -45,6 +47,13 @@ bot.on("guildCreate", guild => {
         goodbyeb: "falso"
       };
       fs.writeFile("./goodbyeb.json", JSON.stringify(db4), (err) => {
+        if (err) console.log(err)
+      });
+  let db5 = JSON.parse(fs.readFileSync("./db.json", "utf8"));
+      db5[guild.id] = {
+        welcomec: "nada"
+      };
+      fs.writeFile("./db.json", JSON.stringify(db5), (err) => {
         if (err) console.log(err)
       });
  
@@ -114,40 +123,7 @@ bot.on("message", async message => {
   var fs = require('fs')
   
   let db1 = JSON.parse(fs.readFileSync("./welcomeb.json", "utf8"));
-  if(!db1[message.guild.id]) {
-  db1[message.guild.id] = {
-      welcomeb: "falso"
-    }}
-    
-    fs.writeFile("./welcomeb.json", JSON.stringify(db1), (err) => {
-      if (err) console.log(err)
-    });
-    let db2 = JSON.parse(fs.readFileSync("./welcomec.json", "utf8"));
-    if(!db2[message.guild.id]) {
-    db2[message.guild.id] = {
-      welcomec: "nada"
-    }} 
-    fs.writeFile("./welcomec.json", JSON.stringify(db2), (err) => {
-      if (err) console.log(err)
-    }); 
-    let db3 = JSON.parse(fs.readFileSync("./id.json", "utf8"));
-    if(!db3[message.guild.id]){
-    db3[message.guild.id] = {
-      id: message.guild.id
-    }}
-    
-    fs.writeFile("./id.json", JSON.stringify(db3), (err) => {
-      if (err) console.log(err)
-    });
-    let db4 = JSON.parse(fs.readFileSync("./goodbyeb.json", "utf8"));
-    if(!db4[message.guild.id]){
-    db4[message.guild.id] = {
-      goodbyeb: "falso"
-    }}
-    fs.writeFile("./goodbyeb.json", JSON.stringify(db4), (err) => {
-      if (err) console.log(err)
-    });
-
+ 
     if(message.author.bot == true) return;
     let prefix = botconfig.prefix;
     let messageArray = message.content.split(" ");
