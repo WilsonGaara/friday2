@@ -3,10 +3,9 @@ var Discord = require('discord.js');
 var fs = require('fs');
 //Programação:
 module.exports.run = async (bot, message, args, prefix, authornick, botnick) => {
-    message.channel.send("👤 **Detectando usuário...**")
     message.channel.send(`✅ Olá, ${botnick}, deseja ver o que posso fazer?`);
-    message.channel.send("📰 (15/07/2019) Meus comandos são: `avatar, calc, clima, configs, help, magicball, ping, ppt, whoisyou`.")
-    message.channel.send(`> Aiai... Updates, não estou por fora; calma! (26/07/19) Adicionados comandos de música:`)
+    message.channel.send("Meus comandos são: \n`"+bot.commands.map(c => "."+c.config.name).join(', ')+"`")  
+    
     var embed = new Discord.RichEmbed()
     .setColor(`#00ffff`)
     .setTimestamp()
